@@ -25,10 +25,20 @@
 </div>  
 
 <div class="widgetnya">  
-<h1 class="page-heading">Blogroll</h1>
+<h1 class="page-heading">Categories</h1>
 <div class="badanwidget">
-  
-  
+  {% for category in site.categories %}
+<li style="font-size: {{ category | last | size | times: 100 | divided_by: site.categories.size | plus: 70  }}%">
+  {{ category | first }}
+  <span>({{ category | last | size }})</span>
+</li>
+
+<ul class = "arc-list">
+  {% for post in category.last %}
+  <li>{{ post.date | date:"%Y-%m-%d "}}<a href="{{ post.url }}">{{ post.title }}</a></li>
+  {% endfor %}
+</ul>
+{% endfor %}
 </div>
 </div>
 

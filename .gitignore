@@ -30,3 +30,11 @@
 
 # Debug files
 *.dSYM/
+
+#_site
+/_site
+
+#cache
+/.sass-cache
+
+.DS_Store 
