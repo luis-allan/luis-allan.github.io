@@ -1,0 +1,216 @@
+---
+layout: post
+title:  "python 语言学习 - 1"
+date:   2016-03-16 10:10:00 +0800
+categories: [python]
+tags:
+- python
+---
+
+1、python 默认的编码为ASCII,如果要处理中文字符，需要设置文本格式为utf-8编码，在文件的开头部分可以加入#-*- coding:utf-8 -*-
+2、python 字符串： 
+	1） python 字符串可以使用单引号或者双引号，在这两者中，特殊字符需要转义， 字符串还可以包含在"""或者'''中，这种类型的字符串不需要做转义,如下例子所示:
+		print 'allan\' football'
+		print "it's your turn now"
+		print """你好，“Tom” """
+	2) python 字符串切片时，区间是前闭后开的。
+		word = "hello"
+		print word[0]    ----> h
+		print word[0:2]  ----> he
+		print word[:3]   ----> hel
+		print word[1:]   ----> ello
+		print word[0:100]----> hello   退化切片，上限超过总长度后退化为最大长度
+		print word[2:1]  ----> “”	   输出空字符串
+		print word[-1]	 ----> o       负数索引是从右向左
+		print word[-100] ----> 越界     负数的绝对值超过字符串总长度的时候，越界,只有在做区间的切片时负数才会退化，否则会下标越界
+	3）python 字符串是不可变的，word[0] = 'x',是非法的，不可向字符串的索引赋值
+	4) python 字符串编码，是用Unicode字符串时，要在字符串钱加 u或者ur(原始unicode) 前缀
+		word = u"你好"
+		print word.encode("utf-8")
+3、python 列表：--->类似于数组的概念，类型是可以混合的
+	words = ["Tom", 100, "Allan", 1234]
+	print words
+	print len(words)    ----> 4
+
+	# remove
+	words[0:2] = []
+	print words    ----> ['Allan', 1234]
+
+	# insert
+	words[1:1] = ["Figo", "Ronaldo"]
+	print words    ----> ['Allan', 'Figo', 'Ronaldo', 1234]
+
+	# insert and replace element
+	words[1:2] = [1111, 2222]
+	print words    ----> ['Allan', 1111, 2222, 'Ronaldo', 1234]
+
+	# insert itselt into the list at the beginning
+	words[:0] = words
+	print words   ----> 'Allan', 1111, 2222, 'Ronaldo', 1234, 'Allan', 1111, 2222, 'Ronaldo', 1234]
+
+	# 嵌套， python 支持嵌套
+	b = [4, 5]
+	a = [1, 2, b]
+	print a         ----> [1, 2, [4, 5]]
+	print len(a)    ----> 3
+4、python 函数
+	1) 使用可变参数
+	def order_dish(kind, amount, price):
+    print "kind is ", kind
+    print "amount is ", amount
+    print "price is ", price
+
+	order = ["tom", "jerry", "10"]
+	order1 = {"kind": "banana", "amount": "100", "price": "1.8"}
+	# 参数前面一个* 标识将参数当成元组解析
+	order_dish(*order)
+	print "-" * 40
+	#参数前面两个*, 标识参数按照字典解析
+	order_dish(**order1)
+
+	2）文档字符串
+	第一行一般为描述函数简单功能，不介绍调用约定及参数等
+	如果为多行，第二行一般空着， 之后的行为描述函数调用约定等
+
+	def order_dish(kind, amount, price):
+    """Order dish function
+
+    [description]
+
+    Arguments:
+        kind {[string]} -- [kind of dish]
+        amount {[integer]} -- [amount of dish]
+        price {[float]} -- [price of the dish]
+    """
+    print kind
+    print amount
+    print price
+ 5、python 数据结构
+ 	1) 链表 list
+ 		对list来说，三个内置的函数可以对list的使用有很大的帮助
+ 		filer(), map(), reduce
+ 		def f(x):
+    		return x % 2 != 0 and x % 3 != 0
+
+
+	def add(x, y):
+	    return x + y
+
+	#执行结果 [1, 5, 7, 11, 13, 17, 19, 23]
+	print filter(f, range(1, 25))
+	#执行结果 [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+	print map(add, range(1, 11), range(1, 11))
+	#执行结果 55
+	print reduce(add, range(1, 11))
+	2) 元组
+	#this is a tuple
+	temp = 'hello',
+	print type(temp)
+
+	#this is str
+	temp = 'hello'
+	print type(temp)
+
+	#元组的封装
+	t = 12345, 67890, 'hello'
+	#元组在输出时总是带有括号的, (12345, 67890, 'hello')
+	print t
+	#元组的拆封
+	x, y, z = t
+	print x, y, z
+	3) set
+	4) dict
+	5) 序列对象比较
+	相同类型的序列比较 ： 首先比较前两个元素，在比较接下去的两个元素......
+	不同类型的序列比较，是根据类型来确定大小的， list 类型  < str < 元组(tuple)
+6、python 模块
+	例如导入一个fibo模块时
+	模块搜索路径的顺序为当前路径名为fibo.py的文件，然后是PYTHONPATH,然后是PATH路径，最后是安装目录中。
+7、输入和输出
+	pickle 模块
+	可以把几乎所有的python对象表达为字符串， 称为封装(pickling)
+	从字符串表达出重新构造的对象的过程称为拆封， unpickling
+	
+	f = open('/Users/allan/Downloads/pyProject/fax.txt', 'w')
+	pickle.dump(x, f)
+	f.close()
+
+	ff = open('/Users/allan/Downloads/pyProject/fax.txt', 'r')
+	y = pickle.load(ff)
+	print y
+
+8、异常
+	#finally 在任何情况下都会被执行，一本用于一些资源清理等。
+	while True:
+	    try:
+	        x = int(raw_input("please input a num : "))
+	    except ValueError:
+	        print "invalid value"
+	        raise ValueError
+	    else:
+	    	print "in else"
+	    finally:
+	    	print "in finally"
+9、类
+	1) 在python的类中，类的成员都是public的，成员函数都是具有vitual属性的,可以在类的成员函数之前加__来使该成员或者方法只能在类内访问，变成私有的
+		class A:
+			#该成员只有在类内部才可以访问
+			__data = []
+			_tstr = []
+			#该方法只能在类内部被访问
+			def __internal():
+				return "this is internal"
+			def outer():
+				return "this is outer"
+	2) 类中的__init__()方法类似于构造函数，在创建每个对象的时候，都会被调用，该方法可以有参数也可以没有参数
+	3) 同名的数据属性会覆盖方法属性，所以要避免数据属性和方法属性的命名,约定好命名规则。
+	4) 在python的类的成员方法中，所有的方法第一个参数必须为self
+	5）isinstance(A, B) 在A是B或者B的子类的类型时才会返回True， issubclass(A, B) A是B的子类的时候返回True
+	6）继承：
+		class derivedClassName(BaseClassName):
+			.........
+			.........
+	7) 关于空类的定义
+		以下的定义和调用在语法是是可以的，但是实际意义是什么？？？？？？？？？
+		class Employee:
+			pass
+		allan = Employee()
+		allan.name = "Allan Luis"
+		allan.title = "Engineer"
+	8）异常也可以是类
+		class B: 
+			pass
+		class C(B):
+			pass
+		class D(C): 
+			pass
+		#B C D
+		for c in [B, C, D]: 
+			try:
+				raise c() 
+			except D:
+				print "D" 
+			except C:
+				print "C" 
+			except B:
+				print "B"
+		#B B B
+		for c in [B, C, D]: 
+			try:
+				raise c() 
+			except D:
+				print "B" 
+			except C:
+				print "C" 
+			except B:
+				print "D"
+
+10、 标准库
+	1) shutil, 主要是针对日常文件和目录管理
+		shutil.copy(src, dest)
+	2）glob 从目录通配符搜索中生成文件列表， 可以把制定路径中的制定类型的文件搜索出来
+		print glob.glob('*.py')
+
+
+
+
